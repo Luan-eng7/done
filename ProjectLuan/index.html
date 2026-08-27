@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="pt-AO">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feliz Aniversário, Kaylandy 🌸</title>
+
+<!--
+  ================================================================
+  GUIA RÁPIDO DE EDIÇÃO — leia antes de usar
+  ================================================================
+  1. FOTOS: crie uma pasta chamada "fotos" ao lado deste arquivo
+     e coloque dentro dela imagens chamadas exatamente:
+     fotos/1.jpg, fotos/2.jpg, fotos/3.jpg, fotos/4.jpg, fotos/5.jpg, fotos/6.jpg
+     (Se um arquivo não existir, o site mostra um quadro elegante
+     no lugar, avisando o caminho exato que falta — nada quebra.)
+
+  2. MÚSICA (opcional): coloque um mp3 em musica/nossa-musica.mp3
+     Se não existir, o botão de música simplesmente não aparece.
+
+  3. TEXTOS E DATAS: todo o conteúdo (nome, carta, motivos, datas)
+     está reunido no bloco "CONFIG" dentro da tag <script> mais abaixo,
+     procure por "EDITE AQUI ▾". Não precisa mexer em mais nada.
+  ================================================================
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,500&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root{
+  --cream:      #FFF6F8;
+  --blush:      #FFD9E6;
+  --blush-2:    #FFC2D8;
+  --rose:       #E85D8C;
+  --deep-rose:  #C23A6B;
+  --wine:       #5C1B37;
+  --ink:        #3A1220;
+  --gold:       #E8B75D;
+  --gold-soft:  #F3D9A5;
+  --white:      #FFFFFF;
+
+  --font-script: 'Great Vibes', cursive;
+  --font-display:'Playfair Display', serif;
+  --font-body:   'Poppins', sans-serif;
+
+  --ease: cubic-bezier(.22,.9,.32,1);
+}
+
+*{ box-sizing:border-box; margin:0; padding:0; }
+html{ scroll-behavior:smooth; }
+body{
+  font-family:var(--font-body);
+  color:var(--ink);
+  background:var(--cream);
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+img{ max-width:100%; display:block; }
+button{ font-family:inherit; cursor:pointer; border:none; background:none; }
+::selection{ background:var(--blush-2); color:var(--wine); }
+
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important; }
+}
+
+/* ============================================================
+   CANVAS DE FUNDO — pétalas flutuantes
+   ============================================================ */
+#petal-canvas{
+  position:fixed; inset:0; width:100%; height:100%;
+  z-index:1; pointer-events:none;
+}
+
+/* ============================================================
+   NAV DOTS (progresso das seções)
+   ============================================================ */
+.dots{
+  position:fixed; right:22px; top:50%; transform:translateY(-50%);
+  z-index:50; display:flex; flex-direction:column; gap:14px;
+}
+.dots button{
+  width:9px; height:9px; border-radius:50%;
+  background:rgba(92,27,55,.25);
+  transition:all .35s var(--ease);
+}
+.dots button.active{ background:var(--rose); transform:scale(1.5); }
+@media (max-width:720px){ .dots{ display:none; } }
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{
+  position:relative; min-height:100svh;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center; padding:32px 20px;
+  background:
+    radial-gradient(ellipse at 20% 15%, rgba(255,217,230,.9), transparent 55%),
+    radial-gradient(ellipse at 85% 80%, rgba(232,183,93,.25), transparent 50%),
+    linear-gradient(180deg, var(--cream) 0%, #FFEFF3 60%, var(--cream) 100%);
+  z-index:2;
+}
+.hero-eyebrow{
+  font-size:.72rem; letter-spacing:.35em; text-transform:uppercase;
+  color:var(--deep-rose); font-weight:600; margin-bottom:18px;
+  opacity:0; animation:fadeUp 1s var(--ease) .2s forwards;
+}
+.hero-name{
+  font-family:var(--font-script);
+  font-size:clamp(3.4rem, 13vw, 8.5rem);
+  line-height:1;
+  color:var(--wine);
+  text-shadow:0 4px 30px rgba(232,93,140,.25);
+  display:flex; flex-wrap:wrap; justify-content:center; gap:.08em;
+}
+.hero-name span{
+  display:inline-block; opacity:0; transform:translateY(40px) rotate(-3deg);
+  animation:letterIn .9s var(--ease) forwards;
+}
+@keyframes letterIn{ to{ opacity:1; transform:translateY(0) rotate(0); } }
+
+.hero-sub{
+  font-family:var(--font-display); font-style:italic;
+  font-size:clamp(1.05rem,2.6vw,1.5rem);
+  color:var(--ink); margin-top:20px; max-width:560px;
+  opacity:0; animation:fadeUp 1s var(--ease) 1.4s forwards;
+}
+.hero-sparkle{
+  position:absolute; font-size:1.4rem; color:var(--gold);
+  animation:sparkle 2.4s ease-in-out infinite;
+}
+@keyframes sparkle{ 0%,100%{opacity:.2; transform:scale(.8) rotate(0deg);} 50%{opacity:1; transform:scale(1.2) rotate(15deg);} }
+
+.hero-scroll{
+  position:absolute; bottom:34px; left:50%; transform:translateX(-50%);
+  display:flex; flex-direction:column; align-items:center; gap:8px;
+  font-size:.68rem; letter-spacing:.25em; text-transform:uppercase;
+  color:var(--deep-rose); opacity:0; animation:fadeUp 1s var(--ease) 2s forwards;
+}
+.hero-scroll .line{ width:1px; height:34px; background:linear-gradient(var(--rose), transparent); animation:pulseLine 1.8s ease-in-out infinite; }
+@keyframes pulseLine{ 0%,100%{opacity:.3;} 50%{opacity:1;} }
+@keyframes fadeUp{ from{opacity:0; transform:translateY(18px);} to{opacity:1; transform:translateY(0);} }
+
+/* ============================================================
+   SEÇÃO GENÉRICA
+   ============================================================ */
+.section{
+  position:relative; z-index:2;
+  padding:min(14vh,120px) 20px;
+  max-width:1000px; margin:0 auto;
+}
+.eyebrow{
+  font-size:.7rem; letter-spacing:.3em; text-transform:uppercase;
+  color:var(--deep-rose); font-weight:600; text-align:center; margin-bottom:14px;
+}
+.title{
+  font-family:var(--font-display); font-weight:700;
+  font-size:clamp(1.9rem,4.6vw,3rem);
+  text-align:center; color:var(--wine); margin-bottom:10px;
+}
+.title em{ font-style:italic; color:var(--rose); }
+.reveal{ opacity:0; transform:translateY(36px); transition:opacity .9s var(--ease), transform .9s var(--ease); }
+.reveal.in{ opacity:1; transform:translateY(0); }
+
+/* ============================================================
+   CARTA
+   ============================================================ */
+.letter-wrap{
+  margin-top:56px; max-width:680px; margin-inline:auto;
+  background:linear-gradient(180deg,#fff, #FFF8FA);
+  border-radius:6px 6px 60px 6px;
+  padding:clamp(30px,6vw,64px);
+  box-shadow:0 30px 60px -25px rgba(92,27,55,.28), 0 0 0 1px rgba(232,93,140,.08);
+  position:relative;
+}
+.letter-wrap::before{
+  content:'✦'; position:absolute; top:-18px; left:38px;
+  color:var(--gold); font-size:1.6rem; background:var(--cream);
+  width:36px; height:36px; display:flex; align-items:center; justify-content:center;
+}
+.letter-greeting{ font-family:var(--font-display); font-style:italic; font-size:1.3rem; color:var(--rose); margin-bottom:18px; }
+.letter-body{
+  font-size:1.02rem; line-height:1.95; color:var(--ink); white-space:pre-line;
+}
+.letter-sign{
+  font-family:var(--font-script); font-size:2.1rem; color:var(--deep-rose);
+  margin-top:26px; text-align:right;
+}
+
+/* ============================================================
+   CONTADORES
+   ============================================================ */
+.counters{
+  display:grid; grid-template-columns:repeat(2,1fr); gap:24px;
+  margin-top:50px;
+}
+@media (max-width:640px){ .counters{ grid-template-columns:1fr; } }
+.counter-card{
+  background:linear-gradient(155deg,#fff,#FFF1F6);
+  border:1px solid rgba(232,93,140,.15);
+  border-radius:22px; padding:30px 24px; text-align:center;
+  box-shadow:0 20px 45px -30px rgba(92,27,55,.4);
+}
+.counter-card h3{
+  font-family:var(--font-display); font-style:italic; font-weight:500;
+  color:var(--deep-rose); font-size:1rem; margin-bottom:18px; letter-spacing:.02em;
+}
+.counter-grid{ display:flex; justify-content:center; gap:14px; flex-wrap:wrap; }
+.counter-cell{ min-width:64px; }
+.counter-num{
+  font-family:var(--font-display); font-weight:700; font-size:clamp(1.6rem,4vw,2.3rem);
+  color:var(--wine); font-variant-numeric:tabular-nums;
+}
+.counter-label{ font-size:.62rem; letter-spacing:.15em; text-transform:uppercase; color:var(--rose); margin-top:4px; }
+.counter-note{ margin-top:16px; font-size:.85rem; color:#8a4a63; }
+
+/* ============================================================
+   JARDIM DE MOTIVOS (elemento assinatura)
+   ============================================================ */
+.garden{
+  margin-top:70px; display:flex; flex-direction:column; align-items:center;
+}
+.garden-hint{ font-size:.85rem; color:#8a4a63; margin-top:8px; text-align:center; max-width:360px; }
+.flower-field{
+  position:relative; width:min(92vw,640px); aspect-ratio:1/1; max-height:640px;
+  display:flex; align-items:center; justify-content:center;
+}
+.flower-center{
+  position:relative; z-index:3; width:96px; height:96px; border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, var(--gold-soft), var(--gold) 70%);
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.8rem; box-shadow:0 0 0 8px rgba(232,183,93,.18), 0 20px 40px -18px rgba(92,27,55,.5);
+}
+.petal{
+  position:absolute; top:50%; left:50%;
+  width:min(26vw,150px); height:min(15vw,86px);
+  transform-origin:0% 50%;
+  margin-top:calc(-1 * min(7.5vw,43px));
+  perspective:800px;
+}
+.petal-inner{
+  position:relative; width:100%; height:100%;
+  transform-style:preserve-3d; transition:transform .7s var(--ease);
+  cursor:pointer;
+}
+.petal.open .petal-inner{ transform:rotateY(180deg); }
+.petal-face{
+  position:absolute; inset:0; backface-visibility:hidden;
+  border-radius:0 90px 0 90px / 0 130px 0 130px;
+  display:flex; align-items:center; justify-content:center;
+  text-align:center; padding:10px 16px;
+  box-shadow:0 10px 24px -14px rgba(92,27,55,.5);
+}
+.petal-front{
+  background:linear-gradient(135deg, var(--blush), var(--rose));
+}
+.petal-front::after{ content:'♡'; color:#fff; font-size:1.1rem; opacity:.85; }
+.petal-back{
+  background:linear-gradient(135deg,#fff,#FFEAF1);
+  transform:rotateY(180deg);
+  font-size:.72rem; line-height:1.35; color:var(--wine); font-weight:500;
+  border:1px solid rgba(232,93,140,.25);
+}
+.petal:hover .petal-inner{ transform:translateY(-4px) scale(1.04); }
+.petal.open:hover .petal-inner{ transform:rotateY(180deg) translateY(-4px) scale(1.04); }
+
+/* ============================================================
+   GALERIA
+   ============================================================ */
+.gallery{
+  margin-top:56px; display:grid; grid-template-columns:repeat(3,1fr); gap:16px;
+}
+@media (max-width:720px){ .gallery{ grid-template-columns:repeat(2,1fr); } }
+.photo{
+  position:relative; aspect-ratio:1/1; border-radius:16px; overflow:hidden;
+  background:linear-gradient(155deg,#FFE2EC,#FFF6F8);
+  box-shadow:0 16px 30px -20px rgba(92,27,55,.5);
+  cursor:pointer;
+}
+.photo:nth-child(2n){ transform:translateY(14px); }
+.photo img{ width:100%; height:100%; object-fit:cover; transition:transform .6s var(--ease); }
+.photo:hover img{ transform:scale(1.08); }
+.photo .missing-note{
+  position:absolute; inset:0; display:none; flex-direction:column; align-items:center; justify-content:center;
+  gap:8px; padding:12px; text-align:center; border:1.5px dashed rgba(232,93,140,.5);
+  color:var(--deep-rose); font-size:.68rem; border-radius:16px;
+}
+.photo.missing .missing-note{ display:flex; }
+.photo.missing img{ display:none; }
+.photo .missing-note .icon{ font-size:1.4rem; }
+
+.lightbox{
+  position:fixed; inset:0; z-index:100; background:rgba(58,18,32,.92);
+  display:flex; align-items:center; justify-content:center; padding:24px;
+  opacity:0; pointer-events:none; transition:opacity .35s var(--ease);
+}
+.lightbox.open{ opacity:1; pointer-events:auto; }
+.lightbox img{ max-width:min(90vw,720px); max-height:80vh; border-radius:10px; box-shadow:0 30px 80px rgba(0,0,0,.5); }
+.lightbox-close, .lightbox-nav{
+  position:absolute; color:#fff; font-size:1.6rem; opacity:.85; transition:opacity .2s;
+}
+.lightbox-close:hover, .lightbox-nav:hover{ opacity:1; }
+.lightbox-close{ top:24px; right:28px; }
+.lightbox-nav.prev{ left:20px; top:50%; transform:translateY(-50%); }
+.lightbox-nav.next{ right:20px; top:50%; transform:translateY(-50%); }
+
+/* ============================================================
+   FINAL
+   ============================================================ */
+.finale{
+  text-align:center; padding:min(16vh,140px) 20px min(10vh,80px);
+  background:linear-gradient(180deg,var(--cream), #FFE7EF 55%, var(--cream));
+  position:relative; z-index:2;
+}
+.finale .title{ margin-bottom:22px; }
+.finale p{ max-width:520px; margin:0 auto 34px; color:#7a3c53; line-height:1.8; }
+.cta{
+  display:inline-flex; align-items:center; gap:10px;
+  background:linear-gradient(135deg,var(--rose),var(--deep-rose));
+  color:#fff; padding:16px 34px; border-radius:100px;
+  font-size:.95rem; font-weight:600; letter-spacing:.02em;
+  box-shadow:0 18px 40px -14px rgba(194,58,107,.6);
+  transition:transform .3s var(--ease), box-shadow .3s var(--ease);
+}
+.cta:hover{ transform:translateY(-3px); box-shadow:0 24px 50px -14px rgba(194,58,107,.75); }
+.finale-msg{
+  margin-top:30px; font-family:var(--font-display); font-style:italic;
+  color:var(--wine); font-size:1.15rem; max-width:520px; margin-inline:auto;
+  opacity:0; transform:translateY(14px); transition:all .8s var(--ease);
+}
+.finale-msg.show{ opacity:1; transform:translateY(0); }
+
+footer{
+  text-align:center; padding:26px 20px 40px; font-size:.72rem;
+  color:#b06f88; letter-spacing:.04em; position:relative; z-index:2;
+}
+
+/* ============================================================
+   BOTÃO DE MÚSICA
+   ============================================================ */
+.music-btn{
+  position:fixed; bottom:22px; left:22px; z-index:60;
+  width:52px; height:52px; border-radius:50%;
+  background:linear-gradient(135deg,var(--rose),var(--gold));
+  color:#fff; font-size:1.2rem; display:none; align-items:center; justify-content:center;
+  box-shadow:0 14px 30px -12px rgba(92,27,55,.6);
+  animation:spinSlow 6s linear infinite; animation-play-state:paused;
+}
+.music-btn.playing{ animation-play-state:running; }
+@keyframes spinSlow{ to{ transform:rotate(360deg); } }
+
+/* focus visibility */
+a:focus-visible, button:focus-visible{ outline:2px solid var(--deep-rose); outline-offset:3px; }
+</style>
+</head>
+<body>
+
+<canvas id="petal-canvas"></canvas>
+
+<nav class="dots" aria-hidden="true">
+  <button data-target="hero" class="active"></button>
+  <button data-target="carta"></button>
+  <button data-target="contadores"></button>
+  <button data-target="jardim"></button>
+  <button data-target="galeria"></button>
+  <button data-target="final"></button>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <span class="hero-sparkle" style="top:18%; left:14%;">✦</span>
+  <span class="hero-sparkle" style="top:70%; left:82%; animation-delay:.8s;">✦</span>
+  <span class="hero-sparkle" style="top:30%; left:85%; animation-delay:1.4s;">✧</span>
+  <div class="hero-eyebrow">Um site feito com carinho, só para ti</div>
+  <h1 class="hero-name" id="heroName"></h1>
+  <p class="hero-sub" id="heroSub"></p>
+  <div class="hero-scroll"><span>role para baixo</span><span class="line"></span></div>
+</section>
+
+<!-- CARTA -->
+<section class="section" id="carta">
+  <div class="eyebrow reveal">A carta</div>
+  <h2 class="title reveal">Antes de mais nada<br><em>uma coisa que precisas saber</em></h2>
+  <div class="letter-wrap reveal">
+    <div class="letter-greeting" id="letterGreeting"></div>
+    <div class="letter-body" id="letterBody"></div>
+    <div class="letter-sign" id="letterSign"></div>
+  </div>
+</section>
+
+<!-- CONTADORES -->
+<section class="section" id="contadores">
+  <div class="eyebrow reveal">Números do nosso tempo</div>
+  <h2 class="title reveal">Contando cada <em>segundo</em></h2>
+  <div class="counters">
+    <div class="counter-card reveal">
+      <h3 id="countdownTitle">Faltam para o teu dia</h3>
+      <div class="counter-grid" id="countdownGrid"></div>
+      <div class="counter-note" id="countdownNote"></div>
+    </div>
+    <div class="counter-card reveal">
+      <h3 id="togetherTitle">Estamos juntos há</h3>
+      <div class="counter-grid" id="togetherGrid"></div>
+      <div class="counter-note" id="togetherNote"></div>
+    </div>
+  </div>
+</section>
+
+<!-- JARDIM DE MOTIVOS -->
+<section class="section" id="jardim">
+  <div class="eyebrow reveal">O jardim</div>
+  <h2 class="title reveal">Cada pétala guarda <em>um motivo</em></h2>
+  <div class="garden reveal">
+    <div class="garden-hint">Toca em cada pétala para a abrir</div>
+    <div class="flower-field" id="flowerField">
+      <div class="flower-center">🌸</div>
+    </div>
+  </div>
+</section>
+
+<!-- GALERIA -->
+<section class="section" id="galeria">
+  <div class="eyebrow reveal">Memórias</div>
+  <h2 class="title reveal">Pedacinhos <em>nossos</em></h2>
+  <div class="gallery" id="gallery"></div>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lbClose" aria-label="Fechar">✕</button>
+  <button class="lightbox-nav prev" id="lbPrev" aria-label="Anterior">‹</button>
+  <img id="lbImg" src="" alt="">
+  <button class="lightbox-nav next" id="lbNext" aria-label="Próxima">›</button>
+</div>
+
+<!-- FINAL -->
+<section class="finale" id="final">
+  <div class="eyebrow reveal">Para terminar</div>
+  <h2 class="title reveal" id="finaleTitle"></h2>
+  <p class="reveal" id="finaleText"></p>
+  <button class="cta reveal" id="finaleBtn">Feliz aniversário, meu amor 💌</button>
+  <p class="finale-msg" id="finaleMsg"></p>
+</section>
+
+<footer>feito com ♡ para <span id="footerName"></span></footer>
+
+<button class="music-btn" id="musicBtn" aria-label="Tocar música">🎵</button>
+<audio id="bgAudio" loop preload="none"></audio>
+
+<script>
+/* ================================================================
+   CONFIG — EDITE AQUI ▾  (todo o conteúdo do site está aqui dentro)
+   ================================================================ */
+const CONFIG = {
+  nomeCurto: "Kaylandy",
+  nomeCompleto: "Kaylandy de Fátima Pinto Capindiça",
+
+  // Data de aniversário dela no formato "MM-DD" (mês-dia). O contador
+  // calcula sempre a próxima ocorrência automaticamente, todo ano.
+  aniversarioMesDia: "09-02", // EDITE AQUI ▾ ex: "04-23" para 23 de abril
+
+  // Data em que começaram a namorar, formato "AAAA-MM-DD".
+  dataInicioNamoro: "2025-10-27", // EDITE AQUI ▾
+
+  saudacaoCarta: `Minha querida Kaylandy,`,
+
+  textoCarta:
+`Hoje o dia é sobre ti, mas para mim é sobre nós dois.
+
+Quis fazer algo que não se compra em nenhuma loja: um lugar só nosso,
+feito à mão, letra por letra, para dizer o quanto a tua existência
+muda tudo à minha volta.
+
+Há dias em que as palavras não chegam perto do que sinto, então
+deixei que este site falasse um pouco por mim — com pétalas, luz
+e tudo o que a nossa história merece.
+
+Feliz aniversário, meu amor. Que este novo ano de vida te traga
+tudo o que mereces, e um pouco mais.`,
+
+  assinaturaCarta: "Com todo o meu amor",
+
+  // As pétalas do "jardim" — cada uma revela um motivo ao ser tocada.
+  motivos: [ // EDITE AQUI ▾
+    "Pelo teu sorriso, que ilumina qualquer sala em que entras",
+    "Pela forma como cuidas de mim, mesmo sem eu pedir",
+    "Pela tua força em cada dia difícil",
+    "Por rires das minhas piadas sem graça",
+    "Por seres o meu porto seguro",
+    "Pela paciência infinita que tens comigo",
+    "Por cada memória que construímos juntos",
+    "Por simplesmente seres quem és"
+  ],
+
+  // Caminhos das fotos — coloque os arquivos numa pasta "fotos" ao
+  // lado deste ficheiro, com estes nomes exatos.
+  fotos: [ // EDITE AQUI ▾
+    "fotos/1.jpeg", "fotos/2.jpeg", "fotos/3.jpeg",
+    "fotos/4.jpeg", "fotos/5.jpeg", "fotos/6.jpeg"
+  ],
+
+  tituloFinal: "Hoje o mundo celebra o que eu celebro todos os dias",
+  textoFinal: "Obrigado por existires, por seres tu, e por deixares que eu faça parte da tua história. Feliz aniversário, meu amor.",
+  mensagemFinal: "Amo-te hoje, amanhã, e em todos os aniversários que ainda vamos viver juntos. ♡",
+
+  // Música de fundo (opcional) — coloque um mp3 aqui; se não existir,
+  // o botão simplesmente não aparece.
+  musica: "musica/nossa-musica.mp3" // EDITE AQUI ▾
+};
+/* ================================================================
+   FIM DO CONFIG
+   ================================================================ */
+
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- HERO: nome animado ---------- */
+(function initHero(){
+  const el = document.getElementById('heroName');
+  const chars = CONFIG.nomeCurto.split('');
+  el.innerHTML = chars.map((c,i)=>
+    `<span style="animation-delay:${0.5 + i*0.07}s">${c === ' ' ? '&nbsp;' : c}</span>`
+  ).join('');
+  document.getElementById('heroSub').textContent =
+    `Hoje celebramos-te, ${CONFIG.nomeCompleto.split(' ')[0]}. Feliz aniversário.`;
+  document.getElementById('footerName').textContent = CONFIG.nomeCurto;
+})();
+
+/* ---------- CARTA ---------- */
+(function initLetter(){
+  document.getElementById('letterGreeting').textContent = CONFIG.saudacaoCarta;
+  document.getElementById('letterBody').textContent = CONFIG.textoCarta;
+  document.getElementById('letterSign').textContent = CONFIG.assinaturaCarta + ', ♡';
+})();
+
+/* ---------- CONTADORES ---------- */
+function nextBirthday(mesDia){
+  const [m,d] = mesDia.split('-').map(Number);
+  const now = new Date();
+  let year = now.getFullYear();
+  let target = new Date(year, m-1, d, 0,0,0);
+  if (target < now) target = new Date(year+1, m-1, d, 0,0,0);
+  return target;
+}
+
+function renderUnits(containerId, units){
+  const container = document.getElementById(containerId);
+  container.innerHTML = units.map(u => `
+    <div class="counter-cell">
+      <div class="counter-num">${u.value}</div>
+      <div class="counter-label">${u.label}</div>
+    </div>`).join('');
+}
+
+function tick(){
+  // Countdown até o aniversário
+  const target = nextBirthday(CONFIG.aniversarioMesDia);
+  let diff = target - new Date();
+  const isToday = diff <= 0 && diff > -1000*60*60*24;
+
+  if (isToday){
+    document.getElementById('countdownTitle').textContent = 'Hoje é o dia dela! 🎉';
+    renderUnits('countdownGrid', [{value:'✿', label:'feliz aniversário'}]);
+    document.getElementById('countdownNote').textContent = '';
+  } else {
+    if (diff < 0) diff += 1000*60*60*24*365.25; // salvaguarda
+    const s = Math.floor(diff/1000);
+    const days = Math.floor(s/86400);
+    const hours = Math.floor((s%86400)/3600);
+    const mins = Math.floor((s%3600)/60);
+    const secs = s%60;
+    renderUnits('countdownGrid', [
+      {value:days, label:'dias'}, {value:hours, label:'horas'},
+      {value:mins, label:'min'}, {value:secs, label:'seg'}
+    ]);
+    document.getElementById('countdownNote').textContent =
+      target.toLocaleDateString('pt-PT', {day:'numeric', month:'long'});
+  }
+
+  // Tempo juntos
+  const start = new Date(CONFIG.dataInicioNamoro + 'T00:00:00');
+  let diff2 = new Date() - start;
+  if (diff2 < 0){
+    document.getElementById('togetherNote').textContent = 'Ajuste "dataInicioNamoro" no CONFIG';
+    renderUnits('togetherGrid', [{value:'—', label:'dias'}]);
+  } else {
+    const s2 = Math.floor(diff2/1000);
+    const days2 = Math.floor(s2/86400);
+    const years2 = Math.floor(days2/365.25);
+    const months2 = Math.floor((days2 - years2*365.25)/30.44);
+    const restDays = Math.floor(days2 - years2*365.25 - months2*30.44);
+    renderUnits('togetherGrid', [
+      {value:years2, label:'anos'}, {value:months2, label:'meses'}, {value:Math.max(restDays,0), label:'dias'}
+    ]);
+    document.getElementById('togetherNote').textContent = `${days2.toLocaleString('pt-PT')} dias de nós`;
+  }
+}
+tick();
+setInterval(tick, 1000);
+
+/* ---------- JARDIM DE MOTIVOS ---------- */
+(function initGarden(){
+  const field = document.getElementById('flowerField');
+  const total = CONFIG.motivos.length;
+  const radius = window.innerWidth < 640 ? 118 : 190;
+
+  CONFIG.motivos.forEach((motivo, i)=>{
+    const angle = (360/total)*i;
+    const petal = document.createElement('div');
+    petal.className = 'petal';
+    petal.style.transform = `rotate(${angle}deg) translateX(${radius}px)`;
+    petal.innerHTML = `
+      <div class="petal-inner">
+        <div class="petal-face petal-front"></div>
+        <div class="petal-face petal-back" style="transform: rotate(${-angle}deg) rotateY(180deg)">${motivo}</div>
+      </div>`;
+    const inner = petal.querySelector('.petal-inner');
+    inner.addEventListener('click', ()=> petal.classList.toggle('open'));
+    field.appendChild(petal);
+  });
+})();
+
+/* ---------- GALERIA ---------- */
+(function initGallery(){
+  const gallery = document.getElementById('gallery');
+  CONFIG.fotos.forEach((src, i)=>{
+    const div = document.createElement('div');
+    div.className = 'photo';
+    div.innerHTML = `
+      <img src="${src}" alt="Foto ${i+1} de ${CONFIG.nomeCurto}" loading="lazy">
+      <div class="missing-note"><span class="icon">🤍</span><span>Coloque a foto em<br><strong>${src}</strong></span></div>`;
+    const img = div.querySelector('img');
+    img.addEventListener('error', ()=> div.classList.add('missing'));
+    div.addEventListener('click', ()=>{ if(!div.classList.contains('missing')) openLightbox(i); });
+    gallery.appendChild(div);
+  });
+})();
+
+/* ---------- LIGHTBOX ---------- */
+let lbIndex = 0;
+const lightbox = document.getElementById('lightbox');
+const lbImg = document.getElementById('lbImg');
+function openLightbox(i){
+  lbIndex = i;
+  lbImg.src = CONFIG.fotos[lbIndex];
+  lightbox.classList.add('open');
+}
+function closeLightbox(){ lightbox.classList.remove('open'); }
+function stepLightbox(dir){
+  lbIndex = (lbIndex + dir + CONFIG.fotos.length) % CONFIG.fotos.length;
+  lbImg.src = CONFIG.fotos[lbIndex];
+}
+document.getElementById('lbClose').addEventListener('click', closeLightbox);
+document.getElementById('lbPrev').addEventListener('click', ()=>stepLightbox(-1));
+document.getElementById('lbNext').addEventListener('click', ()=>stepLightbox(1));
+lightbox.addEventListener('click', e=>{ if(e.target === lightbox) closeLightbox(); });
+document.addEventListener('keydown', e=>{
+  if(!lightbox.classList.contains('open')) return;
+  if(e.key==='Escape') closeLightbox();
+  if(e.key==='ArrowLeft') stepLightbox(-1);
+  if(e.key==='ArrowRight') stepLightbox(1);
+});
+
+/* ---------- FINAL ---------- */
+document.getElementById('finaleTitle').textContent = CONFIG.tituloFinal;
+document.getElementById('finaleText').textContent = CONFIG.textoFinal;
+document.getElementById('finaleBtn').addEventListener('click', ()=>{
+  document.getElementById('finaleMsg').textContent = CONFIG.mensagemFinal;
+  document.getElementById('finaleMsg').classList.add('show');
+  burst();
+});
+
+/* ---------- SCROLL REVEALS ---------- */
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); });
+},{ threshold:0.2 });
+document.querySelectorAll('.reveal').forEach(el=> io.observe(el));
+
+/* ---------- NAV DOTS ---------- */
+const dotButtons = document.querySelectorAll('.dots button');
+dotButtons.forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.getElementById(btn.dataset.target).scrollIntoView({behavior:'smooth'});
+  });
+});
+const sectionIds = ['hero','carta','contadores','jardim','galeria','final'];
+const sectionEls = sectionIds.map(id=>document.getElementById(id));
+const navIO = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      const idx = sectionEls.indexOf(entry.target);
+      dotButtons.forEach(b=>b.classList.remove('active'));
+      if(dotButtons[idx]) dotButtons[idx].classList.add('active');
+    }
+  });
+},{ threshold:0.5 });
+sectionEls.forEach(el=> navIO.observe(el));
+
+/* ---------- MÚSICA DE FUNDO ---------- */
+(function initMusic(){
+  const audio = document.getElementById('bgAudio');
+  const btn = document.getElementById('musicBtn');
+  audio.src = CONFIG.musica;
+  audio.addEventListener('canplay', ()=>{ btn.style.display = 'flex'; }, { once:true });
+  audio.addEventListener('error', ()=>{ btn.style.display = 'none'; });
+  btn.addEventListener('click', ()=>{
+    if(audio.paused){ audio.play().catch(()=>{}); btn.classList.add('playing'); btn.textContent='🎶'; }
+    else { audio.pause(); btn.classList.remove('playing'); btn.textContent='🎵'; }
+  });
+})();
+
+/* ---------- CANVAS: pétalas flutuantes ---------- */
+(function petalCanvas(){
+  const canvas = document.getElementById('petal-canvas');
+  const ctx = canvas.getContext('2d');
+  let w, h, petals = [];
+  const COUNT = reduceMotion ? 10 : (window.innerWidth < 640 ? 16 : 30);
+
+  function resize(){
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  function makePetal(){
+    return {
+      x: Math.random()*w,
+      y: Math.random()*-h,
+      r: 4 + Math.random()*7,
+      speed: 0.4 + Math.random()*0.9,
+      drift: Math.random()*1.4 - 0.7,
+      rot: Math.random()*Math.PI*2,
+      rotSpeed: (Math.random()-0.5)*0.02,
+      hue: Math.random() > 0.5 ? '#F2A6C1' : '#F3D9A5',
+      opacity: 0.35 + Math.random()*0.4
+    };
+  }
+  for(let i=0;i<COUNT;i++) petals.push(makePetal());
+
+  function draw(){
+    ctx.clearRect(0,0,w,h);
+    petals.forEach(p=>{
+      p.y += p.speed;
+      p.x += p.drift + Math.sin(p.y*0.01);
+      p.rot += p.rotSpeed;
+      if(p.y > h+20){ Object.assign(p, makePetal(), {y:-20}); }
+
+      ctx.save();
+      ctx.translate(p.x,p.y);
+      ctx.rotate(p.rot);
+      ctx.globalAlpha = p.opacity;
+      ctx.fillStyle = p.hue;
+      ctx.beginPath();
+      ctx.ellipse(0,0,p.r,p.r*0.6,0,0,Math.PI*2);
+      ctx.fill();
+      ctx.restore();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ---------- CONFETE FINAL ---------- */
+function burst(){
+  const canvas = document.createElement('canvas');
+  canvas.style.position='fixed'; canvas.style.inset='0'; canvas.style.zIndex='90';
+  canvas.style.pointerEvents='none';
+  canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+  document.body.appendChild(canvas);
+  const ctx = canvas.getContext('2d');
+  const colors = ['#E85D8C','#E8B75D','#FFD9E6','#C23A6B'];
+  let pieces = Array.from({length: reduceMotion?30:110}).map(()=>({
+    x: canvas.width/2, y: canvas.height*0.7,
+    vx: (Math.random()-0.5)*14, vy: -(6+Math.random()*10),
+    size: 5+Math.random()*6, color: colors[Math.floor(Math.random()*colors.length)],
+    rot: Math.random()*Math.PI, rotSpeed:(Math.random()-0.5)*0.3, life:0
+  }));
+  function frame(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    let alive = false;
+    pieces.forEach(p=>{
+      p.vy += 0.35; p.x += p.vx; p.y += p.vy; p.rot += p.rotSpeed; p.life++;
+      if(p.life < 160){
+        alive = true;
+        ctx.save();
+        ctx.translate(p.x,p.y); ctx.rotate(p.rot);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size*0.5);
+        ctx.restore();
+      }
+    });
+    if(alive) requestAnimationFrame(frame);
+    else canvas.remove();
+  }
+  frame();
+}
+</script>
+</body>
+</html>
